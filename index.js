@@ -31,16 +31,16 @@ function createItem(item) {
 
 	deleteButton.addEventListener('click', function() {
 		clone.remove();
-		const currentTasks = getTasksFromDOM();
-		saveTasks(currentTasks);
+		items = getTasksFromDOM();
+		saveTasks(items);
 	});
 
 	duplicateButton.addEventListener('click', function() {
 		const itemName = textElement.textContent;
 		const newItem = createItem(itemName);
 		listElement.prepend(newItem);
-		const currentTasks = getTasksFromDOM();
-		saveTasks(currentTasks);
+		items = getTasksFromDOM();
+		saveTasks(items);
 	});
 
 	editButton.addEventListener('click', function() {
@@ -50,8 +50,8 @@ function createItem(item) {
 
 	textElement.addEventListener('blur', function() {
 		textElement.setAttribute('contenteditable', 'false');
-		const currentTasks = getTasksFromDOM();
-		saveTasks(currentTasks);
+		items = getTasksFromDOM();
+		saveTasks(items);
 	});
 
 	return clone;
@@ -82,17 +82,15 @@ formElement.addEventListener('submit', function(evt) {
 	evt.preventDefault();
 	
 	const taskText = inputElement.value.trim();
-	if (taskText === '') {
-		return;
+	if (taskText !== '') {
+		const taskElement = createItem(taskText);
+		listElement.prepend(taskElement);
+		
+		items = getTasksFromDOM();
+		saveTasks(items);
+		
+		inputElement.value = '';
 	}
-	
-	const taskElement = createItem(taskText);
-	listElement.prepend(taskElement);
-	
-	const currentTasks = getTasksFromDOM();
-	saveTasks(currentTasks);
-	
-	inputElement.value = '';
 });
 
 renderTasks();
